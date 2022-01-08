@@ -5,10 +5,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +48,16 @@ class MockitoExampleTest {
         assertEquals(0, c.compareTo(1));
         assertEquals(0, c.compareTo(99));
 
+    }
+
+    //doReturn() example.
+    @Test
+    void testSpyingOnLists(){
+        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> spiedList = spy(list);
+        doReturn("42").when(spiedList).get(99);
+        String mockValue = (String) spiedList.get(99);
+        assertEquals("42",mockValue);
     }
 
 }
