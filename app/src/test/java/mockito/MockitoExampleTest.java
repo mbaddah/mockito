@@ -3,6 +3,7 @@ package mockito;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.isA;
@@ -12,6 +13,8 @@ import static org.mockito.Mockito.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class MockitoExampleTest {
@@ -21,6 +24,9 @@ class MockitoExampleTest {
 
     //instead of annotating @Mock here another option is to pass in as Method parameter
     Comparable<String> c;
+
+    @Spy
+    List<String> spy = new LinkedList<>();
 
     @Test
     void testMultipleReturnValues() {
@@ -50,14 +56,24 @@ class MockitoExampleTest {
 
     }
 
-    //doReturn() example.
+    //doReturn() example. Use doReturn() when spying
     @Test
-    void testSpyingOnLists(){
+    void testSpyingOnArrayList(){
         ArrayList<String> list = new ArrayList<String>();
         ArrayList<String> spiedList = spy(list);
         doReturn("42").when(spiedList).get(99);
         String mockValue = (String) spiedList.get(99);
         assertEquals("42",mockValue);
+    }
+
+    //TODO - Add doThrow() example
+
+    //Spy declared at beginning of class
+    @Test
+    void testSpyingOnLinkedList() {
+        //have to use doReturn()
+        doReturn("iExpectThisStringValueWhenIGetSpy@Position0").when(spy).get(0);
+        assertEquals("iExpectThisStringValueWhenIGetSpy@Position0", spy.get(0));
     }
 
 }
