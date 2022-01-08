@@ -76,4 +76,22 @@ class MockitoExampleTest {
         assertEquals("iExpectThisStringValueWhenIGetSpy@Position0", spy.get(0));
     }
 
+
+    @Test
+    void testVerifyCalls(@Mock Database database) {
+        when(database.getUniqueId()).thenReturn(43);
+        database.setUniqueId(12);
+        database.getUniqueId();
+        database.getUniqueId();
+
+        verify(database, times(2)).getUniqueId(); //Verify getUniqueId() called atleast 2x
+        verify(database, never()).isAvailable(); //Verify isAvailable() was never called
+        verify(database, atLeastOnce()).setUniqueId(12);
+        verify(database, atLeastOnce()).setUniqueId(anyInt());
+
+
+        verifyNoMoreInteractions(database); //Final verification to check verified all calling methods
+
+    }
+
 }
